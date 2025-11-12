@@ -190,20 +190,18 @@ export default function PodcastPage() {
                 <h3 className="text-lg font-semibold">
                   {filteredAndSortedEpisodes.length} Aflevering{filteredAndSortedEpisodes.length !== 1 ? "en" : ""}
                 </h3>
-                <div className="flex items-center gap-2">
-                  <Switch
-                    id="show-played"
-                    checked={showPlayed}
-                    onCheckedChange={(checked) => {
-                      setShowPlayed(checked);
-                      setCurrentPage(1);
-                    }}
-                    data-testid="switch-show-played"
-                  />
-                  <Label htmlFor="show-played" className="text-sm font-medium">
-                    Toon beluisterde afleveringen
-                  </Label>
-                </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => {
+                    setShowPlayed(!showPlayed);
+                    setCurrentPage(1);
+                  }}
+                  className="h-auto p-0 text-sm font-medium hover:bg-transparent"
+                  data-testid="button-toggle-played"
+                >
+                  {showPlayed ? "Verberg" : "Toon"} beluisterde afleveringen
+                </Button>
               </div>
 
               {paginatedEpisodes.length === 0 ? (
