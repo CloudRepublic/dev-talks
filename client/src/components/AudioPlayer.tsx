@@ -7,6 +7,7 @@ interface AudioPlayerProps {
   episodeTitle: string;
   audioUrl: string;
   imageUrl?: string;
+  playRequested?: number;
   onClose: () => void;
 }
 
@@ -14,6 +15,7 @@ export default function AudioPlayer({
   episodeTitle,
   audioUrl,
   imageUrl,
+  playRequested,
   onClose,
 }: AudioPlayerProps) {
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -75,6 +77,21 @@ export default function AudioPlayer({
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
   }, [isPlaying]);
+
+  useEffect(() => {
+    if (!playRequested || playRequested === 0) return;
+    
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    if (audio.paused) {
+      audio.play().then(() => {
+        setIsPlaying(true);
+      }).catch((error) => {
+        console.error("Play failed:", error);
+      });
+    }
+  }, [playRequested]);
 
   const togglePlay = () => {
     const audio = audioRef.current;

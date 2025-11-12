@@ -32,12 +32,17 @@ export default function PodcastPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedKeywords, setSelectedKeywords] = useState<string[]>([]);
   const [currentEpisode, setCurrentEpisode] = useState<Episode | null>(null);
+  const [playRequested, setPlayRequested] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [sortBy, setSortBy] = useState<SortOption>("date-desc");
   const [showPlayed, setShowPlayed] = useState(false);
   const episodeRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
   const { togglePlayed, isPlayed, markAsPlaying, getRecentlyPlayed } = usePlayedEpisodes();
+
+  const { data: podcast, isLoading } = useQuery<PodcastFeed>({
+    queryKey: ["/api/podcast"],
+  });
 
   useEffect(() => {
     const savedScrollPosition = localStorage.getItem('podcastScrollPosition');
@@ -58,17 +63,41 @@ export default function PodcastPage() {
   }, []);
 
   useEffect(() => {
-    if (currentEpisode && episodeRefs.current[currentEpisode.id]) {
-      episodeRefs.current[currentEpisode.id]?.scrollIntoView({ 
-        behavior: 'smooth', 
-        block: 'center' 
-      });
+    if (!currentEpisode) return;
+    
+    if (isPlayed(currentEpisode.id) && !showPlayed) {
+      setShowPlayed(true);
     }
-  }, [currentEpisode]);
+  }, [currentEpisode, showPlayed, isPlayed]);
 
-  const { data: podcast, isLoading } = useQuery<PodcastFeed>({
-    queryKey: ["/api/podcast"],
-  });
+  useEffect(() => {
+    if (!currentEpisode || !podcast) return;
+    
+    const scrollToEpisodeWithRetry = (retries = 0) => {
+      const maxRetries = 20;
+      const ref = episodeRefs.current[currentEpisode.id];
+      
+      if (ref) {
+        ref.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+      
+      if (retries < maxRetries) {
+        requestAnimationFrame(() => scrollToEpisodeWithRetry(retries + 1));
+      }
+    };
+    
+    const episodeIndex = filteredAndSortedEpisodes.findIndex(ep => ep.id === currentEpisode.id);
+    if (episodeIndex !== -1) {
+      const targetPage = Math.floor(episodeIndex / EPISODES_PER_PAGE) + 1;
+      if (targetPage !== currentPage) {
+        setCurrentPage(targetPage);
+      }
+    }
+    
+    const timer = setTimeout(() => scrollToEpisodeWithRetry(), 200);
+    return () => clearTimeout(timer);
+  }, [currentEpisode, podcast, filteredAndSortedEpisodes, currentPage]);
 
   const allKeywords = useMemo(() => {
     if (!podcast) return [];
@@ -217,6 +246,7 @@ export default function PodcastPage() {
                         className="flex-shrink-0 w-64 p-3 cursor-pointer hover-elevate active-elevate-2"
                         onClick={() => {
                           setCurrentEpisode(episode);
+                          setPlayRequested(Date.now());
                           markAsPlaying(episode.id);
                         }}
                         data-testid={`recent-episode-${episodeId}`}
@@ -396,6 +426,7 @@ export default function PodcastPage() {
                             isPlayed={isPlayed(episode.id)}
                             onPlay={() => {
                               setCurrentEpisode(episode);
+                              setPlayRequested(Date.now());
                               markAsPlaying(episode.id);
                             }}
                             onTogglePlayed={() => togglePlayed(episode.id)}
@@ -423,6 +454,7 @@ export default function PodcastPage() {
           episodeTitle={currentEpisode.title}
           audioUrl={currentEpisode.audioUrl}
           imageUrl={currentEpisode.imageUrl}
+          playRequested={playRequested}
           onClose={() => setCurrentEpisode(null)}
         />
       )}
