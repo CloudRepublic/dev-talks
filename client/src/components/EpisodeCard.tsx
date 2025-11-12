@@ -116,16 +116,13 @@ export default function EpisodeCard({
               </Button>
             </div>
 
-            <div className="flex items-center justify-between sm:justify-start gap-3 text-sm text-muted-foreground">
-              <div className="flex items-center gap-1">
-                <Calendar className="h-3.5 w-3.5" />
-                <span>{formattedDate}</span>
-              </div>
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <span>{formattedDate}</span>
               {formattedDuration && (
-                <div className="flex items-center gap-1">
-                  <Clock className="h-3.5 w-3.5" />
+                <>
+                  <span>—</span>
                   <span>{formattedDuration}</span>
-                </div>
+                </>
               )}
             </div>
 
