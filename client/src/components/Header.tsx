@@ -5,52 +5,31 @@ import { useTheme } from "@/contexts/ThemeContext";
 interface HeaderProps {
   imageUrl?: string;
   title?: string;
-  description?: string;
-  episodeCount?: number;
 }
 
-export default function Header({ imageUrl, title, description, episodeCount }: HeaderProps) {
+export default function Header({ imageUrl, title }: HeaderProps) {
   const { theme, toggleTheme } = useTheme();
-
-  const stripHtml = (html: string) => {
-    const tmp = document.createElement("div");
-    tmp.innerHTML = html;
-    return tmp.textContent || tmp.innerText || "";
-  };
 
   return (
     <header className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto max-w-6xl px-4 py-4">
-        <div className="flex items-start justify-between gap-4">
-          <div className="flex flex-wrap items-center gap-4 flex-1">
-            <div className="flex items-start gap-3 flex-shrink-0">
-              {imageUrl ? (
-                <img
-                  src={imageUrl}
-                  alt={title || "Dev Talks"}
-                  className="h-12 w-12 sm:h-14 sm:w-14 flex-shrink-0 rounded-lg object-cover"
-                />
-              ) : (
-                <div className="flex h-12 w-12 sm:h-14 sm:w-14 flex-shrink-0 items-center justify-center rounded-lg bg-primary">
-                  <span className="text-lg font-bold text-primary-foreground">DT</span>
-                </div>
-              )}
-              <div>
-                <h1 className="font-display text-xl font-bold">{title || "Dev Talks"}</h1>
-                {episodeCount !== undefined && (
-                  <p className="text-xs text-muted-foreground">
-                    {episodeCount} Afleveringen
-                  </p>
-                )}
-              </div>
-            </div>
-            {description && (
-              <div className="flex-1 min-w-0 self-center">
-                <p className="text-xs text-muted-foreground line-clamp-2">
-                  {stripHtml(description)}
-                </p>
+        <div className="flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            {imageUrl ? (
+              <img
+                src={imageUrl}
+                alt={title || "Dev Talks"}
+                className="h-10 w-10 rounded-lg object-cover"
+              />
+            ) : (
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary">
+                <span className="text-lg font-bold text-primary-foreground">DT</span>
               </div>
             )}
+            <div>
+              <h1 className="font-display text-xl font-bold">{title || "Dev Talks"}</h1>
+              <p className="text-xs text-muted-foreground">Powered by Cloud Republic, de cloud developers van morgen</p>
+            </div>
           </div>
           <Button
             variant="ghost"
@@ -58,7 +37,6 @@ export default function Header({ imageUrl, title, description, episodeCount }: H
             onClick={toggleTheme}
             data-testid="button-theme-toggle"
             aria-label="Toggle theme"
-            className="flex-shrink-0"
           >
             {theme === "light" ? (
               <Moon className="h-5 w-5" />
