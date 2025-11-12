@@ -137,7 +137,7 @@ export default function PodcastPage() {
                 <img
                   src={podcast.imageUrl}
                   alt={podcast.title}
-                  className="h-48 w-48 rounded-lg object-cover"
+                  className="h-64 w-64 rounded-lg object-cover"
                 />
               )}
               <h2 className="font-display text-3xl font-bold text-center">{podcast.title}</h2>
