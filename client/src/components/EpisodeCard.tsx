@@ -30,7 +30,6 @@ export default function EpisodeCard({
   onTogglePlayed,
 }: EpisodeCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
-  const maxLength = 200;
   
   const stripHtml = (html: string) => {
     const tmp = document.createElement("div");
@@ -39,59 +38,7 @@ export default function EpisodeCard({
   };
   
   const plainDescription = stripHtml(description);
-  const shouldTruncate = plainDescription.length > maxLength;
-  
-  const getTruncatedHtml = (html: string, maxLen: number) => {
-    const tmp = document.createElement("div");
-    tmp.innerHTML = html;
-    const text = tmp.textContent || tmp.innerText || "";
-    
-    if (text.length <= maxLen) return html;
-    
-    const truncated = text.slice(0, maxLen);
-    const tempDiv = document.createElement("div");
-    tempDiv.innerHTML = html;
-    
-    let charCount = 0;
-    const truncateNode = (node: Node): Node | null => {
-      if (node.nodeType === Node.TEXT_NODE) {
-        const textContent = node.textContent || "";
-        if (charCount + textContent.length <= maxLen) {
-          charCount += textContent.length;
-          return node.cloneNode(true);
-        } else {
-          const remaining = maxLen - charCount;
-          if (remaining > 0) {
-            const newNode = document.createTextNode(textContent.slice(0, remaining) + "...");
-            charCount = maxLen;
-            return newNode;
-          }
-          return null;
-        }
-      } else if (node.nodeType === Node.ELEMENT_NODE) {
-        const element = node as Element;
-        const clone = element.cloneNode(false) as Element;
-        for (let i = 0; i < node.childNodes.length && charCount < maxLen; i++) {
-          const childClone = truncateNode(node.childNodes[i]);
-          if (childClone) {
-            clone.appendChild(childClone);
-          }
-        }
-        return clone;
-      }
-      return null;
-    };
-    
-    const resultDiv = document.createElement("div");
-    for (let i = 0; i < tempDiv.childNodes.length && charCount < maxLen; i++) {
-      const clone = truncateNode(tempDiv.childNodes[i]);
-      if (clone) {
-        resultDiv.appendChild(clone);
-      }
-    }
-    
-    return resultDiv.innerHTML;
-  };
+  const shouldTruncate = plainDescription.length > 150;
 
   const formattedDate = (() => {
     try {
@@ -152,12 +99,10 @@ export default function EpisodeCard({
             </div>
 
             <div 
-              className="prose prose-sm max-w-none text-sm leading-relaxed text-foreground/80"
-              dangerouslySetInnerHTML={{ 
-                __html: isExpanded || !shouldTruncate 
-                  ? description 
-                  : getTruncatedHtml(description, maxLength)
-              }}
+              className={`prose prose-sm max-w-none text-sm leading-relaxed text-foreground/80 ${
+                isExpanded ? '' : 'line-clamp-2'
+              }`}
+              dangerouslySetInnerHTML={{ __html: description }}
             />
 
             <div className="flex items-center justify-between gap-2 pt-2">
