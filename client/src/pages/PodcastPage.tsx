@@ -10,11 +10,10 @@ import PaginationControls from "@/components/PaginationControls";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { usePlayedEpisodes } from "@/hooks/usePlayedEpisodes";
 import { AnimatePresence, motion } from "framer-motion";
+import { ArrowUpDown, Check } from "lucide-react";
 
 const EPISODES_PER_PAGE = 10;
 
@@ -165,31 +164,49 @@ export default function PodcastPage() {
                   }}
                 />
               )}
-
-              <div className="flex items-center gap-2">
-                <Label htmlFor="sort-select" className="text-sm font-medium">
-                  Sorteer op:
-                </Label>
-                <Select value={sortBy} onValueChange={(value) => {
-                  setSortBy(value as SortOption);
-                  setCurrentPage(1);
-                }}>
-                  <SelectTrigger className="w-[180px]" id="sort-select" data-testid="select-sort">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="date-desc">Nieuwste eerst</SelectItem>
-                    <SelectItem value="date-asc">Oudste eerst</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
             </div>
 
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold">
-                  {filteredAndSortedEpisodes.length} Aflevering{filteredAndSortedEpisodes.length !== 1 ? "en" : ""}
-                </h3>
+                <div className="flex items-center gap-2">
+                  <h3 className="text-lg font-semibold">
+                    {filteredAndSortedEpisodes.length} Aflevering{filteredAndSortedEpisodes.length !== 1 ? "en" : ""}
+                  </h3>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8"
+                        data-testid="button-sort-menu"
+                      >
+                        <ArrowUpDown className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="start">
+                      <DropdownMenuItem
+                        onClick={() => {
+                          setSortBy("date-desc");
+                          setCurrentPage(1);
+                        }}
+                        data-testid="sort-date-desc"
+                      >
+                        <Check className={`mr-2 h-4 w-4 ${sortBy === "date-desc" ? "opacity-100" : "opacity-0"}`} />
+                        Nieuwste eerst
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={() => {
+                          setSortBy("date-asc");
+                          setCurrentPage(1);
+                        }}
+                        data-testid="sort-date-asc"
+                      >
+                        <Check className={`mr-2 h-4 w-4 ${sortBy === "date-asc" ? "opacity-100" : "opacity-0"}`} />
+                        Oudste eerst
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
                 <Button
                   variant="ghost"
                   size="sm"
