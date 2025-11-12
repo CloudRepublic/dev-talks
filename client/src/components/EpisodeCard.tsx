@@ -91,7 +91,7 @@ export default function EpisodeCard({
 
           <div className="flex-1 space-y-2">
             <div className="flex flex-wrap items-start justify-between gap-2">
-              <h3 className="flex-1 min-w-0 font-display text-xl font-semibold leading-tight">
+              <h3 className="flex-1 min-w-0 sm:flex-initial font-display text-xl font-semibold leading-tight w-full sm:w-auto">
                 {title}
               </h3>
               
@@ -99,20 +99,18 @@ export default function EpisodeCard({
                 variant="ghost"
                 size="sm"
                 onClick={onTogglePlayed}
-                className="h-auto gap-1.5 px-2 py-1 text-sm font-medium text-primary dark:text-primary-foreground hover:bg-transparent flex-shrink-0"
+                className="h-auto gap-1.5 px-2 py-1 text-sm font-medium text-primary dark:text-primary-foreground hover:bg-transparent flex-shrink-0 hidden sm:flex"
                 data-testid={`button-toggle-played-${id}`}
               >
                 {isPlayed ? (
                   <>
                     <X className="h-4 w-4" />
-                    <span className="hidden sm:inline">Markeer als onbeluisterd</span>
-                    <span className="sm:hidden">Onbeluisterd</span>
+                    <span>Markeer als onbeluisterd</span>
                   </>
                 ) : (
                   <>
                     <Check className="h-4 w-4" />
-                    <span className="hidden sm:inline">Markeer als beluisterd</span>
-                    <span className="sm:hidden">Beluisterd</span>
+                    <span>Markeer als beluisterd</span>
                   </>
                 )}
               </Button>
@@ -138,7 +136,7 @@ export default function EpisodeCard({
               dangerouslySetInnerHTML={{ __html: description }}
             />
 
-            <div className="flex flex-wrap items-center justify-between gap-2 pt-2">
+            <div className="flex flex-wrap items-center gap-2 pt-2">
               {shouldTruncate && (
                 <Button
                   variant="ghost"
@@ -166,7 +164,7 @@ export default function EpisodeCard({
                   variant="ghost"
                   size="sm"
                   asChild
-                  className="ml-auto h-auto gap-1.5 px-2 py-1 text-sm font-medium text-primary dark:text-primary-foreground hover:bg-transparent"
+                  className="h-auto gap-1.5 px-2 py-1 text-sm font-medium text-primary dark:text-primary-foreground hover:bg-transparent"
                   data-testid={`link-podlink-${id}`}
                 >
                   <a href={podLinkUrl} target="_blank" rel="noopener noreferrer">
@@ -176,6 +174,26 @@ export default function EpisodeCard({
                   </a>
                 </Button>
               )}
+              
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={onTogglePlayed}
+                className="h-auto gap-1.5 px-2 py-1 text-sm font-medium text-primary dark:text-primary-foreground hover:bg-transparent flex-shrink-0 sm:hidden"
+                data-testid={`button-toggle-played-mobile-${id}`}
+              >
+                {isPlayed ? (
+                  <>
+                    <X className="h-4 w-4" />
+                    <span>Onbeluisterd</span>
+                  </>
+                ) : (
+                  <>
+                    <Check className="h-4 w-4" />
+                    <span>Beluisterd</span>
+                  </>
+                )}
+              </Button>
             </div>
           </div>
         </div>

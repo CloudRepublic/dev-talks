@@ -287,13 +287,13 @@ export default function PodcastPage() {
             )}
 
             <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div className="flex flex-wrap items-center gap-2">
                   <h3 className="text-lg font-semibold">
                     {filteredAndSortedEpisodes.length} Aflevering{filteredAndSortedEpisodes.length !== 1 ? "en" : ""}
                   </h3>
                   {(searchQuery || selectedKeywords.length > 0 || !showPlayed) && filteredAndSortedEpisodes.length < podcast.episodes.length && (
-                    <span className="text-sm text-muted-foreground">
+                    <span className="text-sm text-muted-foreground whitespace-nowrap">
                       (van {podcast.episodes.length} totaal)
                     </span>
                   )}
@@ -339,7 +339,7 @@ export default function PodcastPage() {
                     setShowPlayed(!showPlayed);
                     setCurrentPage(1);
                   }}
-                  className="h-auto px-2 py-1 text-sm font-medium hover:bg-transparent"
+                  className="h-auto px-2 py-1 text-sm font-medium hover:bg-transparent whitespace-nowrap"
                   data-testid="button-toggle-played"
                 >
                   {showPlayed ? "Verberg" : "Toon"} beluisterde afleveringen
