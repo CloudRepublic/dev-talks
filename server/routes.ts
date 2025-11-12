@@ -7,7 +7,7 @@ const RSS_FEED_URL = "https://rss.buzzsprout.com/793019.rss";
 const POD_LINK_SHOW_ID = "1493819242";
 
 function generatePodLinkUrl(guid: string): string {
-  const base64Guid = Buffer.from(guid).toString('base64');
+  const base64Guid = Buffer.from(guid).toString('base64').replace(/=/g, '');
   return `https://pod.link/${POD_LINK_SHOW_ID}/episode/${base64Guid}`;
 }
 
