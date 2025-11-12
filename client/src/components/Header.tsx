@@ -5,30 +5,47 @@ import { useTheme } from "@/contexts/ThemeContext";
 interface HeaderProps {
   imageUrl?: string;
   title?: string;
+  description?: string;
+  episodeCount?: number;
 }
 
-export default function Header({ imageUrl, title }: HeaderProps) {
+export default function Header({ imageUrl, title, description, episodeCount }: HeaderProps) {
   const { theme, toggleTheme } = useTheme();
+
+  const stripHtml = (html: string) => {
+    const tmp = document.createElement("div");
+    tmp.innerHTML = html;
+    return tmp.textContent || tmp.innerText || "";
+  };
 
   return (
     <header className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto max-w-6xl px-4 py-4">
-        <div className="flex items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="flex items-start gap-3 flex-1 min-w-0">
             {imageUrl ? (
               <img
                 src={imageUrl}
                 alt={title || "Dev Talks"}
-                className="h-10 w-10 rounded-lg object-cover"
+                className="h-12 w-12 sm:h-14 sm:w-14 flex-shrink-0 rounded-lg object-cover"
               />
             ) : (
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary">
+              <div className="flex h-12 w-12 sm:h-14 sm:w-14 flex-shrink-0 items-center justify-center rounded-lg bg-primary">
                 <span className="text-lg font-bold text-primary-foreground">DT</span>
               </div>
             )}
-            <div>
+            <div className="flex-1 min-w-0">
               <h1 className="font-display text-xl font-bold">{title || "Dev Talks"}</h1>
-              <p className="text-xs text-muted-foreground">Powered by Cloud Republic, de cloud developers van morgen</p>
+              {episodeCount !== undefined && (
+                <p className="text-xs text-muted-foreground mb-1">
+                  {episodeCount} Afleveringen
+                </p>
+              )}
+              {description && (
+                <p className="text-xs text-muted-foreground line-clamp-2">
+                  {stripHtml(description)}
+                </p>
+              )}
             </div>
           </div>
           <Button

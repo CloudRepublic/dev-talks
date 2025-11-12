@@ -173,7 +173,12 @@ export default function PodcastPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header imageUrl={podcast?.imageUrl} title={podcast?.title} />
+      <Header 
+        imageUrl={podcast?.imageUrl} 
+        title={podcast?.title}
+        description={podcast?.description}
+        episodeCount={podcast?.episodes.length}
+      />
       
       <main className="container mx-auto max-w-6xl px-4 py-8 pb-32">
         {isLoading ? (
@@ -234,11 +239,11 @@ export default function PodcastPage() {
               )}
             </div>
 
-            {getRecentlyPlayed(5).length > 0 && (
+            {getRecentlyPlayed(3).length > 0 && (
               <div className="space-y-3">
                 <h3 className="text-lg font-semibold">Recent beluisterd</h3>
                 <div className="flex gap-3 overflow-x-auto pb-2">
-                  {getRecentlyPlayed(5).map((episodeId) => {
+                  {getRecentlyPlayed(3).map((episodeId) => {
                     const episode = podcast.episodes.find((ep) => ep.id === episodeId);
                     if (!episode) return null;
                     
@@ -337,7 +342,7 @@ export default function PodcastPage() {
                     setShowPlayed(!showPlayed);
                     setCurrentPage(1);
                   }}
-                  className="h-auto p-0 text-sm font-medium hover:bg-transparent"
+                  className="h-auto px-2 py-1 text-sm font-medium hover:bg-transparent"
                   data-testid="button-toggle-played"
                 >
                   {showPlayed ? "Verberg" : "Toon"} beluisterde afleveringen
@@ -354,7 +359,7 @@ export default function PodcastPage() {
                       <>Probeer een andere zoekterm of </>
                     ) : null}
                     {selectedKeywords.length > 0 ? (
-                      <>wis enkele filters</>
+                      <>wis enkele filters </>
                     ) : null}
                     {!showPlayed ? (
                       <>of toon beluisterde afleveringen</>
