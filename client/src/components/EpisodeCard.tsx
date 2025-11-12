@@ -128,7 +128,7 @@ export default function EpisodeCard({
 
             <div 
               className={`prose prose-sm max-w-none text-sm leading-relaxed text-foreground/80 overflow-hidden ${
-                isExpanded ? '' : 'h-10'
+                isExpanded ? '' : 'h-11'
               }`}
               dangerouslySetInnerHTML={{ __html: description }}
             />
