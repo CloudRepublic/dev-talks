@@ -36,6 +36,7 @@ export default function PodcastPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [sortBy, setSortBy] = useState<SortOption>("date-desc");
   const [showPlayed, setShowPlayed] = useState(false);
+  const [clickedFromRecent, setClickedFromRecent] = useState(false);
   const episodeRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
   const { togglePlayed, isPlayed, markAsPlaying, getRecentlyPlayed } = usePlayedEpisodes();
@@ -113,12 +114,13 @@ export default function PodcastPage() {
   }, []);
 
   useEffect(() => {
-    if (!currentEpisode) return;
+    if (!currentEpisode || !clickedFromRecent) return;
     
     if (isPlayed(currentEpisode.id) && !showPlayed) {
       setShowPlayed(true);
     }
-  }, [currentEpisode, showPlayed, isPlayed]);
+    setClickedFromRecent(false);
+  }, [currentEpisode, clickedFromRecent]);
 
   useEffect(() => {
     if (!currentEpisode || !podcast) return;
@@ -245,6 +247,7 @@ export default function PodcastPage() {
                         key={episodeId}
                         className="flex-shrink-0 w-64 p-3 cursor-pointer hover-elevate active-elevate-2"
                         onClick={() => {
+                          setClickedFromRecent(true);
                           setCurrentEpisode(episode);
                           setPlayRequested(Date.now());
                           markAsPlaying(episode.id);
