@@ -99,8 +99,8 @@ export default function EpisodeCard({
             </div>
 
             <div 
-              className={`prose prose-sm max-w-none text-sm leading-relaxed text-foreground/80 ${
-                isExpanded ? '' : 'line-clamp-2'
+              className={`prose prose-sm max-w-none text-sm leading-relaxed text-foreground/80 overflow-hidden ${
+                isExpanded ? '' : 'h-10'
               }`}
               dangerouslySetInnerHTML={{ __html: description }}
             />
