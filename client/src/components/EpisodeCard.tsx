@@ -1,6 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Play, Calendar, Clock, Check, X, ExternalLink } from "lucide-react";
+import { Play, Calendar, Clock, Check, X, ExternalLink, ChevronDown, ChevronUp } from "lucide-react";
 import { format } from "date-fns";
 import { nl } from "date-fns/locale";
 import { useState } from "react";
@@ -137,10 +137,20 @@ export default function EpisodeCard({
                   variant="ghost"
                   size="sm"
                   onClick={() => setIsExpanded(!isExpanded)}
-                  className="h-auto px-2 py-1 text-sm font-medium text-primary dark:text-primary-foreground hover:bg-transparent"
+                  className="h-auto gap-1.5 px-2 py-1 text-sm font-medium text-primary dark:text-primary-foreground hover:bg-transparent"
                   data-testid="button-read-more"
                 >
-                  {isExpanded ? "Lees minder" : "Lees meer"}
+                  {isExpanded ? (
+                    <>
+                      <ChevronUp className="h-3.5 w-3.5" />
+                      <span>Lees minder</span>
+                    </>
+                  ) : (
+                    <>
+                      <ChevronDown className="h-3.5 w-3.5" />
+                      <span>Lees meer</span>
+                    </>
+                  )}
                 </Button>
               )}
               

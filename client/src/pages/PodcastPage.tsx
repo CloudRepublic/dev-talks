@@ -172,6 +172,11 @@ export default function PodcastPage() {
                   <h3 className="text-lg font-semibold">
                     {filteredAndSortedEpisodes.length} Aflevering{filteredAndSortedEpisodes.length !== 1 ? "en" : ""}
                   </h3>
+                  {(searchQuery || selectedKeywords.length > 0 || !showPlayed) && filteredAndSortedEpisodes.length < podcast.episodes.length && (
+                    <span className="text-sm text-muted-foreground">
+                      (van {podcast.episodes.length} totaal)
+                    </span>
+                  )}
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <Button
