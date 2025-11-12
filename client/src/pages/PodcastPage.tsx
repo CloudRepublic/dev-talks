@@ -106,7 +106,7 @@ export default function PodcastPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header />
+      <Header imageUrl={podcast?.imageUrl} title={podcast?.title} />
       
       <main className="container mx-auto max-w-6xl px-4 py-8 pb-32">
         {isLoading ? (
@@ -134,22 +134,10 @@ export default function PodcastPage() {
         ) : podcast ? (
           <div className="space-y-8">
             <div className="space-y-4">
-              <div className="flex items-center gap-4">
-                {podcast.imageUrl && (
-                  <img
-                    src={podcast.imageUrl}
-                    alt={podcast.title}
-                    className="h-20 w-20 rounded-lg object-cover"
-                  />
-                )}
-                <div>
-                  <h2 className="font-display text-3xl font-bold">{podcast.title}</h2>
-                  <div 
-                    className="mt-1 text-muted-foreground prose prose-sm max-w-none"
-                    dangerouslySetInnerHTML={{ __html: podcast.description }}
-                  />
-                </div>
-              </div>
+              <div 
+                className="text-muted-foreground prose prose-sm max-w-none"
+                dangerouslySetInnerHTML={{ __html: podcast.description }}
+              />
             </div>
 
             <div className="space-y-4">

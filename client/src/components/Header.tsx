@@ -2,7 +2,12 @@ import { Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/contexts/ThemeContext";
 
-export default function Header() {
+interface HeaderProps {
+  imageUrl?: string;
+  title?: string;
+}
+
+export default function Header({ imageUrl, title }: HeaderProps) {
   const { theme, toggleTheme } = useTheme();
 
   return (
@@ -10,12 +15,20 @@ export default function Header() {
       <div className="container mx-auto max-w-6xl px-4 py-4">
         <div className="flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary">
-              <span className="text-lg font-bold text-primary-foreground">DT</span>
-            </div>
+            {imageUrl ? (
+              <img
+                src={imageUrl}
+                alt={title || "Dev Talks"}
+                className="h-10 w-10 rounded-lg object-cover"
+              />
+            ) : (
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary">
+                <span className="text-lg font-bold text-primary-foreground">DT</span>
+              </div>
+            )}
             <div>
-              <h1 className="font-display text-xl font-bold">Dev Talks</h1>
-              <p className="text-xs text-muted-foreground">Software Development Podcast</p>
+              <h1 className="font-display text-xl font-bold">{title || "Dev Talks"}</h1>
+              <p className="text-xs text-muted-foreground">Powered by Cloud Republic, de cloud developers van morgen</p>
             </div>
           </div>
           <Button
