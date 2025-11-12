@@ -107,18 +107,20 @@ export default function EpisodeCard({
                 {isPlayed ? (
                   <>
                     <X className="h-4 w-4" />
-                    <span>Markeer als onbeluisterd</span>
+                    <span className="hidden sm:inline">Markeer als onbeluisterd</span>
+                    <span className="sm:hidden">Onbeluisterd</span>
                   </>
                 ) : (
                   <>
                     <Check className="h-4 w-4" />
-                    <span>Markeer als beluisterd</span>
+                    <span className="hidden sm:inline">Markeer als beluisterd</span>
+                    <span className="sm:hidden">Beluisterd</span>
                   </>
                 )}
               </Button>
             </div>
 
-            <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
+            <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-2 sm:gap-3 text-sm text-muted-foreground">
               <div className="flex items-center gap-1">
                 <Calendar className="h-3.5 w-3.5" />
                 <span>{formattedDate}</span>
@@ -171,7 +173,8 @@ export default function EpisodeCard({
                 >
                   <a href={podLinkUrl} target="_blank" rel="noopener noreferrer">
                     <ExternalLink className="h-3.5 w-3.5" />
-                    <span>Luister met je favoriete app</span>
+                    <span className="hidden sm:inline">Luister met je favoriete app</span>
+                    <span className="sm:hidden">Luister</span>
                   </a>
                 </Button>
               )}
