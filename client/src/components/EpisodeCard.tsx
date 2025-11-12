@@ -56,7 +56,7 @@ export default function EpisodeCard({
     <Card className={`group overflow-hidden hover-elevate transition-all duration-150 ${isPlayed ? 'opacity-60' : ''}`}>
         <div className="flex flex-col gap-4 p-6 sm:flex-row">
           <div className="relative flex-shrink-0">
-            <div className="relative h-24 w-24 overflow-hidden rounded-lg bg-muted">
+            <div className="relative h-32 w-32 overflow-hidden rounded-lg bg-muted">
               {imageUrl ? (
                 <img
                   src={imageUrl}

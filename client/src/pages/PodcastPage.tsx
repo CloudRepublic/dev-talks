@@ -119,7 +119,7 @@ export default function PodcastPage() {
               {[1, 2, 3].map((i) => (
                 <Card key={i} className="p-6">
                   <div className="flex gap-4">
-                    <Skeleton className="h-24 w-24 rounded-lg" />
+                    <Skeleton className="h-32 w-32 rounded-lg" />
                     <div className="flex-1 space-y-2">
                       <Skeleton className="h-6 w-3/4" />
                       <Skeleton className="h-4 w-1/2" />
@@ -141,11 +141,11 @@ export default function PodcastPage() {
                 />
               )}
               <h2 className="font-display text-3xl font-bold text-center">{podcast.title}</h2>
-              <p className="text-sm text-muted-foreground text-center">
+              <p className="text-base font-medium text-muted-foreground text-center">
                 {podcast.episodes.length} afleveringen
               </p>
               <div 
-                className="text-muted-foreground prose prose-sm max-w-none w-full"
+                className="text-muted-foreground prose prose-sm max-w-3xl w-full"
                 dangerouslySetInnerHTML={{ __html: podcast.description }}
               />
             </div>
