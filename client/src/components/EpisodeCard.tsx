@@ -5,7 +5,6 @@ import { format } from "date-fns";
 import { nl } from "date-fns/locale";
 import { useState } from "react";
 import { formatDuration } from "@/lib/utils";
-import { motion, AnimatePresence } from "framer-motion";
 
 interface EpisodeCardProps {
   id: string;
@@ -152,24 +151,14 @@ export default function EpisodeCard({
               )}
             </div>
 
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={isExpanded ? "expanded" : "collapsed"}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2, ease: "easeInOut" }}
-              >
-                <div 
-                  className="prose prose-sm max-w-none text-sm leading-relaxed text-foreground/80"
-                  dangerouslySetInnerHTML={{ 
-                    __html: isExpanded || !shouldTruncate 
-                      ? description 
-                      : getTruncatedHtml(description, maxLength)
-                  }}
-                />
-              </motion.div>
-            </AnimatePresence>
+            <div 
+              className="prose prose-sm max-w-none text-sm leading-relaxed text-foreground/80"
+              dangerouslySetInnerHTML={{ 
+                __html: isExpanded || !shouldTruncate 
+                  ? description 
+                  : getTruncatedHtml(description, maxLength)
+              }}
+            />
 
             <div className="flex items-center justify-between gap-2 pt-2">
               {shouldTruncate && (
