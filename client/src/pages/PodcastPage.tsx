@@ -133,7 +133,7 @@ export default function PodcastPage() {
           </div>
         ) : podcast ? (
           <div className="space-y-8">
-            <div className="flex flex-col items-center space-y-4 text-center">
+            <div className="flex flex-col items-center space-y-4">
               {podcast.imageUrl && (
                 <img
                   src={podcast.imageUrl}
@@ -141,12 +141,12 @@ export default function PodcastPage() {
                   className="h-32 w-32 rounded-lg object-cover"
                 />
               )}
-              <h2 className="font-display text-3xl font-bold">{podcast.title}</h2>
-              <p className="text-sm text-muted-foreground">
+              <h2 className="font-display text-3xl font-bold text-center">{podcast.title}</h2>
+              <p className="text-sm text-muted-foreground text-center">
                 {podcast.episodes.length} afleveringen
               </p>
               <div 
-                className="text-muted-foreground prose prose-sm max-w-none"
+                className="text-muted-foreground prose prose-sm max-w-none w-full"
                 dangerouslySetInnerHTML={{ __html: podcast.description }}
               />
             </div>
