@@ -18,7 +18,7 @@ import { AnimatePresence, motion } from "framer-motion";
 
 const EPISODES_PER_PAGE = 10;
 
-type SortOption = "date-desc" | "date-asc" | "played" | "unplayed";
+type SortOption = "date-desc" | "date-asc";
 
 export default function PodcastPage() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -76,10 +76,6 @@ export default function PodcastPage() {
           return new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime();
         case "date-asc":
           return new Date(a.pubDate).getTime() - new Date(b.pubDate).getTime();
-        case "played":
-          return (isPlayed(b.id) ? 1 : 0) - (isPlayed(a.id) ? 1 : 0);
-        case "unplayed":
-          return (isPlayed(a.id) ? 1 : 0) - (isPlayed(b.id) ? 1 : 0);
         default:
           return 0;
       }
@@ -186,8 +182,6 @@ export default function PodcastPage() {
                     <SelectContent>
                       <SelectItem value="date-desc">Nieuwste eerst</SelectItem>
                       <SelectItem value="date-asc">Oudste eerst</SelectItem>
-                      <SelectItem value="unplayed">Onbeluisterd eerst</SelectItem>
-                      <SelectItem value="played">Beluisterd eerst</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
