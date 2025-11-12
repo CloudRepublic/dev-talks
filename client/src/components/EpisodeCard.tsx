@@ -152,21 +152,25 @@ export default function EpisodeCard({
               )}
             </div>
 
-            <motion.div
-              initial={false}
-              animate={{ height: "auto" }}
-              transition={{ duration: 0.3, ease: "easeInOut" }}
-              className="overflow-hidden"
-            >
-              <div 
-                className="prose prose-sm max-w-none text-sm leading-relaxed text-foreground/80"
-                dangerouslySetInnerHTML={{ 
-                  __html: isExpanded || !shouldTruncate 
-                    ? description 
-                    : getTruncatedHtml(description, maxLength)
-                }}
-              />
-            </motion.div>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={isExpanded ? "expanded" : "collapsed"}
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+                className="overflow-hidden"
+              >
+                <div 
+                  className="prose prose-sm max-w-none text-sm leading-relaxed text-foreground/80"
+                  dangerouslySetInnerHTML={{ 
+                    __html: isExpanded || !shouldTruncate 
+                      ? description 
+                      : getTruncatedHtml(description, maxLength)
+                  }}
+                />
+              </motion.div>
+            </AnimatePresence>
 
             <div className="flex items-center justify-between gap-2 pt-2">
               {shouldTruncate && (
