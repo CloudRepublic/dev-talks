@@ -53,10 +53,10 @@ export default function EpisodeCard({
   const formattedDuration = duration ? formatDuration(duration) : "";
 
   return (
-    <Card className={`overflow-hidden hover-elevate transition-all duration-150 ${isPlayed ? 'opacity-60' : ''}`}>
+    <Card className={`group overflow-hidden hover-elevate transition-all duration-150 ${isPlayed ? 'opacity-60' : ''}`}>
         <div className="flex flex-col gap-4 p-6 sm:flex-row">
           <div className="relative flex-shrink-0">
-            <div className="group relative h-24 w-24 overflow-hidden rounded-lg bg-muted">
+            <div className="relative h-24 w-24 overflow-hidden rounded-lg bg-muted">
               {imageUrl ? (
                 <img
                   src={imageUrl}
@@ -92,7 +92,7 @@ export default function EpisodeCard({
                 variant="ghost"
                 size="sm"
                 onClick={onTogglePlayed}
-                className="h-auto gap-1.5 p-0 text-sm font-medium hover:bg-transparent flex-shrink-0"
+                className="h-auto gap-1.5 px-2 py-1 text-sm font-medium text-primary hover:bg-transparent flex-shrink-0"
                 data-testid={`button-toggle-played-${id}`}
               >
                 {isPlayed ? (
@@ -135,7 +135,7 @@ export default function EpisodeCard({
                   variant="ghost"
                   size="sm"
                   onClick={() => setIsExpanded(!isExpanded)}
-                  className="h-auto p-0 text-sm font-medium text-primary hover:bg-transparent"
+                  className="h-auto px-2 py-1 text-sm font-medium text-primary hover:bg-transparent"
                   data-testid="button-read-more"
                 >
                   {isExpanded ? "Lees minder" : "Lees meer"}
@@ -147,7 +147,7 @@ export default function EpisodeCard({
                   variant="ghost"
                   size="sm"
                   asChild
-                  className="ml-auto h-auto gap-1.5 p-0 text-sm font-medium hover:bg-transparent"
+                  className="ml-auto h-auto gap-1.5 px-2 py-1 text-sm font-medium text-primary hover:bg-transparent"
                   data-testid={`link-podlink-${id}`}
                 >
                   <a href={podLinkUrl} target="_blank" rel="noopener noreferrer">
