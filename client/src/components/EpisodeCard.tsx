@@ -155,11 +155,10 @@ export default function EpisodeCard({
             <AnimatePresence mode="wait">
               <motion.div
                 key={isExpanded ? "expanded" : "collapsed"}
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
-                exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.3, ease: "easeInOut" }}
-                className="overflow-hidden"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2, ease: "easeInOut" }}
               >
                 <div 
                   className="prose prose-sm max-w-none text-sm leading-relaxed text-foreground/80"
