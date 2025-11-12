@@ -44,6 +44,56 @@ export default function PodcastPage() {
     queryKey: ["/api/podcast"],
   });
 
+  const allKeywords = useMemo(() => {
+    if (!podcast) return [];
+    const keywordSet = new Set<string>();
+    const commonKeywords = [
+      "AI", "Cloud", "DevOps", "Security", "Python", "C#", ".NET",
+      "JavaScript", "Frontend", "Backend", "Data", "Azure", "AWS"
+    ];
+    
+    podcast.episodes.forEach((episode) => {
+      const text = `${episode.title} ${episode.description}`.toLowerCase();
+      commonKeywords.forEach((keyword) => {
+        if (text.includes(keyword.toLowerCase())) {
+          keywordSet.add(keyword);
+        }
+      });
+    });
+    
+    return Array.from(keywordSet).sort();
+  }, [podcast]);
+
+  const filteredAndSortedEpisodes = useMemo(() => {
+    if (!podcast) return [];
+    
+    let episodes = podcast.episodes.filter((episode) => {
+      const searchText = `${episode.title} ${episode.description}`.toLowerCase();
+      const matchesSearch = searchQuery === "" || searchText.includes(searchQuery.toLowerCase());
+      
+      const matchesKeywords = selectedKeywords.length === 0 || selectedKeywords.every((keyword) =>
+        searchText.includes(keyword.toLowerCase())
+      );
+
+      const matchesPlayedFilter = showPlayed || !isPlayed(episode.id);
+      
+      return matchesSearch && matchesKeywords && matchesPlayedFilter;
+    });
+
+    episodes.sort((a, b) => {
+      switch (sortBy) {
+        case "date-desc":
+          return new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime();
+        case "date-asc":
+          return new Date(a.pubDate).getTime() - new Date(b.pubDate).getTime();
+        default:
+          return 0;
+      }
+    });
+    
+    return episodes;
+  }, [podcast, searchQuery, selectedKeywords, sortBy, showPlayed, isPlayed]);
+
   useEffect(() => {
     const savedScrollPosition = localStorage.getItem('podcastScrollPosition');
     if (savedScrollPosition) {
@@ -98,56 +148,6 @@ export default function PodcastPage() {
     const timer = setTimeout(() => scrollToEpisodeWithRetry(), 200);
     return () => clearTimeout(timer);
   }, [currentEpisode, podcast, filteredAndSortedEpisodes, currentPage]);
-
-  const allKeywords = useMemo(() => {
-    if (!podcast) return [];
-    const keywordSet = new Set<string>();
-    const commonKeywords = [
-      "AI", "Cloud", "DevOps", "Security", "Python", "C#", ".NET",
-      "JavaScript", "Frontend", "Backend", "Data", "Azure", "AWS"
-    ];
-    
-    podcast.episodes.forEach((episode) => {
-      const text = `${episode.title} ${episode.description}`.toLowerCase();
-      commonKeywords.forEach((keyword) => {
-        if (text.includes(keyword.toLowerCase())) {
-          keywordSet.add(keyword);
-        }
-      });
-    });
-    
-    return Array.from(keywordSet).sort();
-  }, [podcast]);
-
-  const filteredAndSortedEpisodes = useMemo(() => {
-    if (!podcast) return [];
-    
-    let episodes = podcast.episodes.filter((episode) => {
-      const searchText = `${episode.title} ${episode.description}`.toLowerCase();
-      const matchesSearch = searchQuery === "" || searchText.includes(searchQuery.toLowerCase());
-      
-      const matchesKeywords = selectedKeywords.length === 0 || selectedKeywords.every((keyword) =>
-        searchText.includes(keyword.toLowerCase())
-      );
-
-      const matchesPlayedFilter = showPlayed || !isPlayed(episode.id);
-      
-      return matchesSearch && matchesKeywords && matchesPlayedFilter;
-    });
-
-    episodes.sort((a, b) => {
-      switch (sortBy) {
-        case "date-desc":
-          return new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime();
-        case "date-asc":
-          return new Date(a.pubDate).getTime() - new Date(b.pubDate).getTime();
-        default:
-          return 0;
-      }
-    });
-    
-    return episodes;
-  }, [podcast, searchQuery, selectedKeywords, sortBy, showPlayed, isPlayed]);
 
   const totalPages = Math.ceil(filteredAndSortedEpisodes.length / EPISODES_PER_PAGE);
   const paginatedEpisodes = filteredAndSortedEpisodes.slice(
