@@ -27,6 +27,9 @@ export default function AudioPlayer({
     const audio = audioRef.current;
     if (!audio) return;
 
+    setIsPlaying(false);
+    setCurrentTime(0);
+
     const updateTime = () => setCurrentTime(audio.currentTime);
     const updateDuration = () => setDuration(audio.duration);
 
@@ -34,10 +37,11 @@ export default function AudioPlayer({
     audio.addEventListener("loadedmetadata", updateDuration);
 
     return () => {
+      audio.pause();
       audio.removeEventListener("timeupdate", updateTime);
       audio.removeEventListener("loadedmetadata", updateDuration);
     };
-  }, []);
+  }, [audioUrl]);
 
   const togglePlay = () => {
     const audio = audioRef.current;

@@ -1,43 +1,63 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Play, Calendar, Clock } from "lucide-react";
 import { format } from "date-fns";
+import { nl } from "date-fns/locale";
 import { useState } from "react";
+import { formatDuration } from "@/lib/utils";
 
 interface EpisodeCardProps {
+  id: string;
   title: string;
   description: string;
   pubDate: string;
   duration?: string;
   imageUrl?: string;
+  isPlayed: boolean;
   onPlay: () => void;
+  onTogglePlayed: () => void;
 }
 
 export default function EpisodeCard({
+  id,
   title,
   description,
   pubDate,
   duration,
   imageUrl,
+  isPlayed,
   onPlay,
+  onTogglePlayed,
 }: EpisodeCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const maxLength = 200;
-  const shouldTruncate = description.length > maxLength;
+  
+  const stripHtml = (html: string) => {
+    const tmp = document.createElement("div");
+    tmp.innerHTML = html;
+    return tmp.textContent || tmp.innerText || "";
+  };
+  
+  const plainDescription = stripHtml(description);
+  const shouldTruncate = plainDescription.length > maxLength;
+  
   const displayDescription = isExpanded || !shouldTruncate
     ? description
-    : description.slice(0, maxLength) + "...";
+    : plainDescription.slice(0, maxLength) + "...";
 
   const formattedDate = (() => {
     try {
-      return format(new Date(pubDate), "MMM d, yyyy");
+      return format(new Date(pubDate), "d MMM yyyy", { locale: nl });
     } catch {
       return pubDate;
     }
   })();
 
+  const formattedDuration = duration ? formatDuration(duration) : "";
+
   return (
-    <Card className="overflow-hidden hover-elevate transition-all duration-150">
+    <Card className={`overflow-hidden hover-elevate transition-all duration-150 ${isPlayed ? 'opacity-60' : ''}`}>
       <div className="flex flex-col gap-4 p-6 sm:flex-row">
         <div className="relative flex-shrink-0">
           <div className="group relative h-24 w-24 overflow-hidden rounded-lg bg-muted">
@@ -58,7 +78,7 @@ export default function EpisodeCard({
                 variant="secondary"
                 className="h-10 w-10 rounded-full"
                 onClick={onPlay}
-                data-testid={`button-play-${title.slice(0, 20)}`}
+                data-testid={`button-play-${id}`}
               >
                 <Play className="h-5 w-5 fill-current" />
               </Button>
@@ -67,26 +87,41 @@ export default function EpisodeCard({
         </div>
 
         <div className="flex-1 space-y-2">
-          <h3 className="font-display text-xl font-semibold leading-tight">
-            {title}
-          </h3>
+          <div className="flex items-start gap-3">
+            <Checkbox
+              checked={isPlayed}
+              onCheckedChange={onTogglePlayed}
+              data-testid={`checkbox-played-${id}`}
+              className="mt-1"
+            />
+            <h3 className="flex-1 font-display text-xl font-semibold leading-tight">
+              {title}
+            </h3>
+          </div>
 
           <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
             <div className="flex items-center gap-1">
               <Calendar className="h-3.5 w-3.5" />
               <span>{formattedDate}</span>
             </div>
-            {duration && (
+            {formattedDuration && (
               <div className="flex items-center gap-1">
                 <Clock className="h-3.5 w-3.5" />
-                <span>{duration}</span>
+                <span>{formattedDuration}</span>
               </div>
             )}
           </div>
 
-          <p className="text-sm leading-relaxed text-foreground/80">
-            {displayDescription}
-          </p>
+          {isExpanded ? (
+            <div 
+              className="prose prose-sm max-w-none text-sm leading-relaxed text-foreground/80"
+              dangerouslySetInnerHTML={{ __html: description }}
+            />
+          ) : (
+            <p className="text-sm leading-relaxed text-foreground/80">
+              {plainDescription.slice(0, maxLength)}{shouldTruncate ? '...' : ''}
+            </p>
+          )}
 
           {shouldTruncate && (
             <Button
@@ -96,7 +131,7 @@ export default function EpisodeCard({
               className="h-auto p-0 text-sm font-medium text-primary hover:bg-transparent"
               data-testid="button-read-more"
             >
-              {isExpanded ? "Read less" : "Read more"}
+              {isExpanded ? "Lees minder" : "Lees meer"}
             </Button>
           )}
         </div>

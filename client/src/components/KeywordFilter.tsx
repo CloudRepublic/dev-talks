@@ -20,7 +20,7 @@ export default function KeywordFilter({
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between gap-2">
-        <h3 className="text-sm font-semibold">Filter by Keywords</h3>
+        <h3 className="text-sm font-semibold">Filter op onderwerp</h3>
         {hasSelection && (
           <Button
             variant="ghost"
@@ -29,7 +29,7 @@ export default function KeywordFilter({
             className="h-7 text-xs"
             data-testid="button-clear-filters"
           >
-            Clear all
+            Wis alles
           </Button>
         )}
       </div>
