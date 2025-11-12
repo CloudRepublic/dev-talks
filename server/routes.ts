@@ -21,7 +21,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const episodes = feed.items.map((item, index) => ({
         id: item.guid || `episode-${index}`,
         title: item.title || "",
-        description: item.contentSnippet || item.content || "",
+        description: item.content || (item as any)['content:encoded'] || item.contentSnippet || "",
         pubDate: item.pubDate || "",
         duration: (item as any).duration || "",
         audioUrl: (item as any).enclosure?.url || "",
