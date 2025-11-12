@@ -27,19 +27,29 @@ export default function AudioPlayer({
     const audio = audioRef.current;
     if (!audio) return;
 
-    setIsPlaying(false);
     setCurrentTime(0);
 
     const updateTime = () => setCurrentTime(audio.currentTime);
     const updateDuration = () => setDuration(audio.duration);
+    
+    const handleCanPlay = () => {
+      audio.play().then(() => {
+        setIsPlaying(true);
+      }).catch((error) => {
+        console.error("Auto-play failed:", error);
+        setIsPlaying(false);
+      });
+    };
 
     audio.addEventListener("timeupdate", updateTime);
     audio.addEventListener("loadedmetadata", updateDuration);
+    audio.addEventListener("canplay", handleCanPlay, { once: true });
 
     return () => {
       audio.pause();
       audio.removeEventListener("timeupdate", updateTime);
       audio.removeEventListener("loadedmetadata", updateDuration);
+      audio.removeEventListener("canplay", handleCanPlay);
     };
   }, [audioUrl]);
 
