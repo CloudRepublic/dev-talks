@@ -166,25 +166,30 @@ export default function PodcastPage() {
                 />
               )}
 
-              <div className="flex flex-wrap items-center gap-4">
-                <div className="flex items-center gap-2">
-                  <Label htmlFor="sort-select" className="text-sm font-medium">
-                    Sorteer op:
-                  </Label>
-                  <Select value={sortBy} onValueChange={(value) => {
-                    setSortBy(value as SortOption);
-                    setCurrentPage(1);
-                  }}>
-                    <SelectTrigger className="w-[180px]" id="sort-select" data-testid="select-sort">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="date-desc">Nieuwste eerst</SelectItem>
-                      <SelectItem value="date-asc">Oudste eerst</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+              <div className="flex items-center gap-2">
+                <Label htmlFor="sort-select" className="text-sm font-medium">
+                  Sorteer op:
+                </Label>
+                <Select value={sortBy} onValueChange={(value) => {
+                  setSortBy(value as SortOption);
+                  setCurrentPage(1);
+                }}>
+                  <SelectTrigger className="w-[180px]" id="sort-select" data-testid="select-sort">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="date-desc">Nieuwste eerst</SelectItem>
+                    <SelectItem value="date-asc">Oudste eerst</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
 
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg font-semibold">
+                  {filteredAndSortedEpisodes.length} Aflevering{filteredAndSortedEpisodes.length !== 1 ? "en" : ""}
+                </h3>
                 <div className="flex items-center gap-2">
                   <Switch
                     id="show-played"
@@ -199,14 +204,6 @@ export default function PodcastPage() {
                     Toon beluisterde afleveringen
                   </Label>
                 </div>
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold">
-                  {filteredAndSortedEpisodes.length} Aflevering{filteredAndSortedEpisodes.length !== 1 ? "en" : ""}
-                </h3>
               </div>
 
               {paginatedEpisodes.length === 0 ? (
