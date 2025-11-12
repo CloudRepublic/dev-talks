@@ -26,7 +26,7 @@ export default function PodcastPage() {
   const [currentEpisode, setCurrentEpisode] = useState<Episode | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [sortBy, setSortBy] = useState<SortOption>("date-desc");
-  const [showPlayed, setShowPlayed] = useState(true);
+  const [showPlayed, setShowPlayed] = useState(false);
 
   const { togglePlayed, isPlayed } = usePlayedEpisodes();
 
