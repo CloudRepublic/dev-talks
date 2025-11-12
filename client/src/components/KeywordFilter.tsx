@@ -19,19 +19,18 @@ export default function KeywordFilter({
 
   return (
     <div className="space-y-3">
-      <div className="flex items-center justify-between gap-2">
+      <div className="flex items-center justify-between gap-2 min-h-7">
         <h3 className="text-sm font-semibold">Filter op onderwerp</h3>
-        {hasSelection && (
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onClearAll}
-            className="h-7 text-xs"
-            data-testid="button-clear-filters"
-          >
-            Wis alles
-          </Button>
-        )}
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={onClearAll}
+          className={`h-7 text-xs transition-opacity ${hasSelection ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+          data-testid="button-clear-filters"
+          disabled={!hasSelection}
+        >
+          Wis alles
+        </Button>
       </div>
       <div className="flex flex-wrap gap-2">
         {keywords.map((keyword) => {

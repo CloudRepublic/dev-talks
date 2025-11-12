@@ -148,7 +148,10 @@ export default function PodcastPage() {
                 )}
                 <div>
                   <h2 className="font-display text-3xl font-bold">{podcast.title}</h2>
-                  <p className="mt-1 text-muted-foreground">{podcast.description}</p>
+                  <div 
+                    className="mt-1 text-muted-foreground prose prose-sm max-w-none"
+                    dangerouslySetInnerHTML={{ __html: podcast.description }}
+                  />
                 </div>
               </div>
             </div>
