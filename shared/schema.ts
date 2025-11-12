@@ -9,6 +9,7 @@ export const episodeSchema = z.object({
   audioUrl: z.string(),
   imageUrl: z.string().optional(),
   link: z.string().optional(),
+  podLinkUrl: z.string().optional(),
 });
 
 export type Episode = z.infer<typeof episodeSchema>;

@@ -250,6 +250,7 @@ export default function PodcastPage() {
                             pubDate={episode.pubDate}
                             duration={episode.duration}
                             imageUrl={episode.imageUrl}
+                            podLinkUrl={episode.podLinkUrl}
                             isPlayed={isPlayed(episode.id)}
                             onPlay={() => setCurrentEpisode(episode)}
                             onTogglePlayed={() => togglePlayed(episode.id)}

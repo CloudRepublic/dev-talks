@@ -1,6 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Play, Calendar, Clock, Check, X } from "lucide-react";
+import { Play, Calendar, Clock, Check, X, ExternalLink } from "lucide-react";
 import { format } from "date-fns";
 import { nl } from "date-fns/locale";
 import { useState } from "react";
@@ -13,6 +13,7 @@ interface EpisodeCardProps {
   pubDate: string;
   duration?: string;
   imageUrl?: string;
+  podLinkUrl?: string;
   isPlayed: boolean;
   onPlay: () => void;
   onTogglePlayed: () => void;
@@ -25,6 +26,7 @@ export default function EpisodeCard({
   pubDate,
   duration,
   imageUrl,
+  podLinkUrl,
   isPlayed,
   onPlay,
   onTogglePlayed,
@@ -105,18 +107,35 @@ export default function EpisodeCard({
               dangerouslySetInnerHTML={{ __html: description }}
             />
 
-            <div className="flex items-center justify-between gap-2 pt-2">
-              {shouldTruncate && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setIsExpanded(!isExpanded)}
-                  className="h-auto p-0 text-sm font-medium text-primary hover:bg-transparent"
-                  data-testid="button-read-more"
-                >
-                  {isExpanded ? "Lees minder" : "Lees meer"}
-                </Button>
-              )}
+            <div className="flex flex-wrap items-center justify-between gap-2 pt-2">
+              <div className="flex flex-wrap items-center gap-3">
+                {shouldTruncate && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setIsExpanded(!isExpanded)}
+                    className="h-auto p-0 text-sm font-medium text-primary hover:bg-transparent"
+                    data-testid="button-read-more"
+                  >
+                    {isExpanded ? "Lees minder" : "Lees meer"}
+                  </Button>
+                )}
+                
+                {podLinkUrl && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    asChild
+                    className="h-auto gap-1.5 p-0 text-sm font-medium hover:bg-transparent"
+                    data-testid={`link-podlink-${id}`}
+                  >
+                    <a href={podLinkUrl} target="_blank" rel="noopener noreferrer">
+                      <ExternalLink className="h-3.5 w-3.5" />
+                      <span>Luister met je favoriete app</span>
+                    </a>
+                  </Button>
+                )}
+              </div>
               
               <Button
                 variant="ghost"
