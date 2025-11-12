@@ -227,13 +227,62 @@ export default function PodcastPage() {
               </div>
 
               {paginatedEpisodes.length === 0 ? (
-                <Card className="p-12 text-center">
+                <Card className="p-12 text-center space-y-4">
+                  <p className="text-lg font-medium text-foreground">
+                    Geen afleveringen gevonden
+                  </p>
                   <p className="text-muted-foreground">
-                    Geen afleveringen gevonden die voldoen aan je zoekcriteria.
+                    {searchQuery ? (
+                      <>Probeer een andere zoekterm of </>
+                    ) : null}
+                    {selectedKeywords.length > 0 ? (
+                      <>wis enkele filters</>
+                    ) : null}
+                    {!showPlayed ? (
+                      <>of toon beluisterde afleveringen</>
+                    ) : null}
                   </p>
-                  <p className="mt-2 text-sm text-muted-foreground">
-                    Probeer je zoekopdracht aan te passen of filters te wissen.
-                  </p>
+                  <div className="flex flex-wrap gap-2 justify-center">
+                    {searchQuery && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => {
+                          setSearchQuery("");
+                          setCurrentPage(1);
+                        }}
+                        data-testid="button-clear-search"
+                      >
+                        Wis zoekopdracht
+                      </Button>
+                    )}
+                    {selectedKeywords.length > 0 && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => {
+                          setSelectedKeywords([]);
+                          setCurrentPage(1);
+                        }}
+                        data-testid="button-clear-filters"
+                      >
+                        Wis filters
+                      </Button>
+                    )}
+                    {!showPlayed && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => {
+                          setShowPlayed(true);
+                          setCurrentPage(1);
+                        }}
+                        data-testid="button-show-played"
+                      >
+                        Toon beluisterde afleveringen
+                      </Button>
+                    )}
+                  </div>
                 </Card>
               ) : (
                 <>
