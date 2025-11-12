@@ -92,7 +92,7 @@ export default function EpisodeCard({
                 variant="ghost"
                 size="sm"
                 onClick={onTogglePlayed}
-                className="h-auto gap-1.5 px-2 py-1 text-sm font-medium text-primary hover:bg-transparent flex-shrink-0"
+                className="h-auto gap-1.5 px-2 py-1 text-sm font-medium text-primary dark:text-primary-foreground hover:bg-transparent flex-shrink-0"
                 data-testid={`button-toggle-played-${id}`}
               >
                 {isPlayed ? (
@@ -135,7 +135,7 @@ export default function EpisodeCard({
                   variant="ghost"
                   size="sm"
                   onClick={() => setIsExpanded(!isExpanded)}
-                  className="h-auto px-2 py-1 text-sm font-medium text-primary hover:bg-transparent"
+                  className="h-auto px-2 py-1 text-sm font-medium text-primary dark:text-primary-foreground hover:bg-transparent"
                   data-testid="button-read-more"
                 >
                   {isExpanded ? "Lees minder" : "Lees meer"}
@@ -147,7 +147,7 @@ export default function EpisodeCard({
                   variant="ghost"
                   size="sm"
                   asChild
-                  className="ml-auto h-auto gap-1.5 px-2 py-1 text-sm font-medium text-primary hover:bg-transparent"
+                  className="ml-auto h-auto gap-1.5 px-2 py-1 text-sm font-medium text-primary dark:text-primary-foreground hover:bg-transparent"
                   data-testid={`link-podlink-${id}`}
                 >
                   <a href={podLinkUrl} target="_blank" rel="noopener noreferrer">
