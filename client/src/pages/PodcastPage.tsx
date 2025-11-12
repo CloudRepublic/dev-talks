@@ -14,6 +14,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { usePlayedEpisodes } from "@/hooks/usePlayedEpisodes";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowUpDown, Check } from "lucide-react";
+import { formatDuration } from "@/lib/utils";
 
 const EPISODES_PER_PAGE = 10;
 
@@ -36,7 +37,7 @@ export default function PodcastPage() {
   const [showPlayed, setShowPlayed] = useState(false);
   const episodeRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
-  const { togglePlayed, isPlayed } = usePlayedEpisodes();
+  const { togglePlayed, isPlayed, markAsPlaying, getRecentlyPlayed } = usePlayedEpisodes();
 
   useEffect(() => {
     const savedScrollPosition = localStorage.getItem('podcastScrollPosition');
@@ -202,6 +203,54 @@ export default function PodcastPage() {
               )}
             </div>
 
+            {getRecentlyPlayed(5).length > 0 && (
+              <div className="space-y-3">
+                <h3 className="text-lg font-semibold">Recent beluisterd</h3>
+                <div className="flex gap-3 overflow-x-auto pb-2">
+                  {getRecentlyPlayed(5).map((episodeId) => {
+                    const episode = podcast.episodes.find((ep) => ep.id === episodeId);
+                    if (!episode) return null;
+                    
+                    return (
+                      <Card
+                        key={episodeId}
+                        className="flex-shrink-0 w-64 p-3 cursor-pointer hover-elevate active-elevate-2"
+                        onClick={() => {
+                          setCurrentEpisode(episode);
+                          markAsPlaying(episode.id);
+                        }}
+                        data-testid={`recent-episode-${episodeId}`}
+                      >
+                        <div className="flex gap-3">
+                          <div className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-md bg-muted">
+                            {episode.imageUrl ? (
+                              <img
+                                src={episode.imageUrl}
+                                alt={episode.title}
+                                className="h-full w-full object-cover"
+                              />
+                            ) : (
+                              <div className="flex h-full w-full items-center justify-center">
+                                <span className="text-sm font-bold text-muted-foreground">DT</span>
+                              </div>
+                            )}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <h4 className="font-medium text-sm leading-tight line-clamp-2">
+                              {episode.title}
+                            </h4>
+                            <p className="text-xs text-muted-foreground mt-1">
+                              {episode.duration ? formatDuration(episode.duration) : ""}
+                            </p>
+                          </div>
+                        </div>
+                      </Card>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -345,7 +394,10 @@ export default function PodcastPage() {
                             imageUrl={episode.imageUrl}
                             podLinkUrl={episode.podLinkUrl}
                             isPlayed={isPlayed(episode.id)}
-                            onPlay={() => setCurrentEpisode(episode)}
+                            onPlay={() => {
+                              setCurrentEpisode(episode);
+                              markAsPlaying(episode.id);
+                            }}
                             onTogglePlayed={() => togglePlayed(episode.id)}
                             isAlternate={index % 2 === 1}
                           />
