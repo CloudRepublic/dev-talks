@@ -22,8 +22,8 @@ export default function Header({ imageUrl, title, description, episodeCount }: H
     <header className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto max-w-6xl px-4 py-4">
         <div className="flex items-start justify-between gap-4">
-          <div className="flex flex-wrap items-start gap-4 flex-1">
-            <div className="flex items-start gap-3 max-w-sm">
+          <div className="flex flex-wrap items-center gap-4 flex-1">
+            <div className="flex items-start gap-3 flex-shrink-0">
               {imageUrl ? (
                 <img
                   src={imageUrl}
@@ -45,7 +45,7 @@ export default function Header({ imageUrl, title, description, episodeCount }: H
               </div>
             </div>
             {description && (
-              <div className="flex-1 min-w-0">
+              <div className="flex-1 min-w-0 self-center">
                 <p className="text-xs text-muted-foreground line-clamp-2">
                   {stripHtml(description)}
                 </p>
