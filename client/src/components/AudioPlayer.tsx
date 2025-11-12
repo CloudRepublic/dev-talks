@@ -53,6 +53,29 @@ export default function AudioPlayer({
     };
   }, [audioUrl]);
 
+  useEffect(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement;
+      const isTyping = target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable;
+      
+      if (isTyping) return;
+
+      if (e.code === 'Space') {
+        e.preventDefault();
+        togglePlay();
+      } else if (e.code === 'ArrowLeft') {
+        e.preventDefault();
+        skip(-10);
+      } else if (e.code === 'ArrowRight') {
+        e.preventDefault();
+        skip(10);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, [isPlaying]);
+
   const togglePlay = () => {
     const audio = audioRef.current;
     if (!audio) return;

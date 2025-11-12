@@ -1,7 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Play, Calendar, Clock, Check, X, ExternalLink, ChevronDown, ChevronUp } from "lucide-react";
-import { format } from "date-fns";
+import { format, formatDistanceToNow } from "date-fns";
 import { nl } from "date-fns/locale";
 import { useState } from "react";
 import { formatDuration } from "@/lib/utils";
@@ -46,7 +46,14 @@ export default function EpisodeCard({
 
   const formattedDate = (() => {
     try {
-      return format(new Date(pubDate), "d MMM yyyy", { locale: nl });
+      const date = new Date(pubDate);
+      const daysDiff = Math.floor((Date.now() - date.getTime()) / (1000 * 60 * 60 * 24));
+      
+      if (daysDiff < 7) {
+        return formatDistanceToNow(date, { addSuffix: true, locale: nl });
+      }
+      
+      return format(date, "d MMM yyyy", { locale: nl });
     } catch {
       return pubDate;
     }
