@@ -65,7 +65,11 @@ export default function EpisodeCard({
     <Card className={`group overflow-hidden hover-elevate transition-all duration-150 ${isPlayed ? 'opacity-70' : ''} ${isAlternate ? 'bg-accent/5' : ''}`}>
         <div className="flex flex-col gap-4 p-6 sm:flex-row">
           <div className="relative flex-shrink-0">
-            <div className="relative h-32 w-32 overflow-hidden rounded-lg bg-muted">
+            <div 
+              className="relative h-32 w-32 overflow-hidden rounded-lg bg-muted cursor-pointer"
+              onClick={onPlay}
+              data-testid={`button-play-${id}`}
+            >
               {imageUrl ? (
                 <img
                   src={imageUrl}
@@ -77,16 +81,10 @@ export default function EpisodeCard({
                   <span className="text-2xl font-bold text-muted-foreground">DT</span>
                 </div>
               )}
-              <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity group-hover:opacity-100">
-                <Button
-                  size="icon"
-                  variant="secondary"
-                  className="h-10 w-10 rounded-full"
-                  onClick={onPlay}
-                  data-testid={`button-play-${id}`}
-                >
-                  <Play className="h-5 w-5 fill-current" />
-                </Button>
+              <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity group-hover:opacity-100 pointer-events-none">
+                <div className="h-10 w-10 rounded-full bg-secondary flex items-center justify-center">
+                  <Play className="h-5 w-5 fill-current text-secondary-foreground" />
+                </div>
               </div>
             </div>
           </div>
