@@ -14,6 +14,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { usePlayedEpisodes } from "@/hooks/usePlayedEpisodes";
+import { AnimatePresence, motion } from "framer-motion";
 
 const EPISODES_PER_PAGE = 10;
 
@@ -224,20 +225,30 @@ export default function PodcastPage() {
               ) : (
                 <>
                   <div className="space-y-4" data-testid="episodes-list">
-                    {paginatedEpisodes.map((episode) => (
-                      <EpisodeCard
-                        key={episode.id}
-                        id={episode.id}
-                        title={episode.title}
-                        description={episode.description}
-                        pubDate={episode.pubDate}
-                        duration={episode.duration}
-                        imageUrl={episode.imageUrl}
-                        isPlayed={isPlayed(episode.id)}
-                        onPlay={() => setCurrentEpisode(episode)}
-                        onTogglePlayed={() => togglePlayed(episode.id)}
-                      />
-                    ))}
+                    <AnimatePresence mode="popLayout">
+                      {paginatedEpisodes.map((episode) => (
+                        <motion.div
+                          key={episode.id}
+                          layout
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -20 }}
+                          transition={{ duration: 0.3 }}
+                        >
+                          <EpisodeCard
+                            id={episode.id}
+                            title={episode.title}
+                            description={episode.description}
+                            pubDate={episode.pubDate}
+                            duration={episode.duration}
+                            imageUrl={episode.imageUrl}
+                            isPlayed={isPlayed(episode.id)}
+                            onPlay={() => setCurrentEpisode(episode)}
+                            onTogglePlayed={() => togglePlayed(episode.id)}
+                          />
+                        </motion.div>
+                      ))}
+                    </AnimatePresence>
                   </div>
 
                   <PaginationControls
