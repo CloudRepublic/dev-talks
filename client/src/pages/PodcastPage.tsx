@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import type { PodcastFeed, Episode } from "@shared/schema";
 import Header from "@/components/Header";
 import SearchBar from "@/components/SearchBar";
@@ -19,6 +19,14 @@ const EPISODES_PER_PAGE = 10;
 
 type SortOption = "date-desc" | "date-asc";
 
+function debounce<T extends (...args: any[]) => void>(func: T, wait: number): T {
+  let timeout: ReturnType<typeof setTimeout> | null = null;
+  return ((...args: Parameters<T>) => {
+    if (timeout) clearTimeout(timeout);
+    timeout = setTimeout(() => func(...args), wait);
+  }) as T;
+}
+
 export default function PodcastPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedKeywords, setSelectedKeywords] = useState<string[]>([]);
@@ -26,8 +34,36 @@ export default function PodcastPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [sortBy, setSortBy] = useState<SortOption>("date-desc");
   const [showPlayed, setShowPlayed] = useState(false);
+  const episodeRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
   const { togglePlayed, isPlayed } = usePlayedEpisodes();
+
+  useEffect(() => {
+    const savedScrollPosition = localStorage.getItem('podcastScrollPosition');
+    if (savedScrollPosition) {
+      window.scrollTo(0, parseInt(savedScrollPosition, 10));
+    }
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      localStorage.setItem('podcastScrollPosition', window.scrollY.toString());
+    };
+
+    const debouncedHandleScroll = debounce(handleScroll, 300);
+    window.addEventListener('scroll', debouncedHandleScroll);
+
+    return () => window.removeEventListener('scroll', debouncedHandleScroll);
+  }, []);
+
+  useEffect(() => {
+    if (currentEpisode && episodeRefs.current[currentEpisode.id]) {
+      episodeRefs.current[currentEpisode.id]?.scrollIntoView({ 
+        behavior: 'smooth', 
+        block: 'center' 
+      });
+    }
+  }, [currentEpisode]);
 
   const { data: podcast, isLoading } = useQuery<PodcastFeed>({
     queryKey: ["/api/podcast"],
@@ -291,6 +327,9 @@ export default function PodcastPage() {
                       {paginatedEpisodes.map((episode, index) => (
                         <motion.div
                           key={episode.id}
+                          ref={(el) => {
+                            if (el) episodeRefs.current[episode.id] = el;
+                          }}
                           layout
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
