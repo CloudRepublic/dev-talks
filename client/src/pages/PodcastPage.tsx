@@ -200,22 +200,24 @@ export default function PodcastPage() {
           </div>
         ) : podcast ? (
           <div className="space-y-8">
-            <div className="flex flex-col items-center space-y-4">
+            <div className="flex flex-col md:flex-row gap-6 items-start">
               {podcast.imageUrl && (
                 <img
                   src={podcast.imageUrl}
                   alt={podcast.title}
-                  className="h-64 w-64 rounded-lg object-cover"
+                  className="h-64 w-64 rounded-lg object-cover flex-shrink-0 mx-auto md:mx-0"
                 />
               )}
-              <h2 className="font-display text-3xl font-bold text-center">{podcast.title}</h2>
-              <p className="text-base font-medium text-muted-foreground text-center">
-                {podcast.episodes.length} afleveringen
-              </p>
-              <div 
-                className="text-muted-foreground prose prose-sm max-w-3xl w-full"
-                dangerouslySetInnerHTML={{ __html: podcast.description }}
-              />
+              <div className="flex-1 space-y-4 w-full">
+                <h2 className="font-display text-3xl font-bold text-center md:text-left">{podcast.title}</h2>
+                <p className="text-base font-medium text-muted-foreground text-center md:text-left">
+                  {podcast.episodes.length} afleveringen
+                </p>
+                <div 
+                  className="text-muted-foreground prose prose-sm max-w-none"
+                  dangerouslySetInnerHTML={{ __html: podcast.description }}
+                />
+              </div>
             </div>
 
             <div className="space-y-4">
@@ -234,11 +236,11 @@ export default function PodcastPage() {
               )}
             </div>
 
-            {getRecentlyPlayed(5).length > 0 && (
+            {getRecentlyPlayed(3).length > 0 && (
               <div className="space-y-3">
                 <h3 className="text-lg font-semibold">Recent beluisterd</h3>
                 <div className="flex gap-3 overflow-x-auto pb-2">
-                  {getRecentlyPlayed(5).map((episodeId) => {
+                  {getRecentlyPlayed(3).map((episodeId) => {
                     const episode = podcast.episodes.find((ep) => ep.id === episodeId);
                     if (!episode) return null;
                     
@@ -337,7 +339,7 @@ export default function PodcastPage() {
                     setShowPlayed(!showPlayed);
                     setCurrentPage(1);
                   }}
-                  className="h-auto p-0 text-sm font-medium hover:bg-transparent"
+                  className="h-auto px-2 py-1 text-sm font-medium hover:bg-transparent"
                   data-testid="button-toggle-played"
                 >
                   {showPlayed ? "Verberg" : "Toon"} beluisterde afleveringen
@@ -354,7 +356,7 @@ export default function PodcastPage() {
                       <>Probeer een andere zoekterm of </>
                     ) : null}
                     {selectedKeywords.length > 0 ? (
-                      <>wis enkele filters</>
+                      <>wis enkele filters </>
                     ) : null}
                     {!showPlayed ? (
                       <>of toon beluisterde afleveringen</>
