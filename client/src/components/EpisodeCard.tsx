@@ -161,7 +161,7 @@ export default function EpisodeCard({
                   variant="ghost"
                   size="sm"
                   asChild
-                  className="h-auto gap-1.5 px-2 py-1 text-sm font-medium text-primary dark:text-primary-foreground hover:bg-transparent"
+                  className="ml-auto h-auto gap-1.5 px-2 py-1 text-sm font-medium text-primary dark:text-primary-foreground hover:bg-transparent"
                   data-testid={`link-podlink-${id}`}
                 >
                   <a href={podLinkUrl} target="_blank" rel="noopener noreferrer">
