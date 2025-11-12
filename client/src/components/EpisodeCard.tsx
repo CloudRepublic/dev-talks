@@ -17,6 +17,7 @@ interface EpisodeCardProps {
   isPlayed: boolean;
   onPlay: () => void;
   onTogglePlayed: () => void;
+  isAlternate?: boolean;
 }
 
 export default function EpisodeCard({
@@ -30,6 +31,7 @@ export default function EpisodeCard({
   isPlayed,
   onPlay,
   onTogglePlayed,
+  isAlternate = false,
 }: EpisodeCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   
@@ -53,7 +55,7 @@ export default function EpisodeCard({
   const formattedDuration = duration ? formatDuration(duration) : "";
 
   return (
-    <Card className={`group overflow-hidden hover-elevate transition-all duration-150 ${isPlayed ? 'opacity-60' : ''}`}>
+    <Card className={`group overflow-hidden hover-elevate transition-all duration-150 ${isPlayed ? 'opacity-70' : ''} ${isAlternate ? 'bg-accent/5' : ''}`}>
         <div className="flex flex-col gap-4 p-6 sm:flex-row">
           <div className="relative flex-shrink-0">
             <div className="relative h-32 w-32 overflow-hidden rounded-lg bg-muted">

@@ -234,7 +234,7 @@ export default function PodcastPage() {
                 <>
                   <div className="space-y-4" data-testid="episodes-list">
                     <AnimatePresence mode="popLayout">
-                      {paginatedEpisodes.map((episode) => (
+                      {paginatedEpisodes.map((episode, index) => (
                         <motion.div
                           key={episode.id}
                           layout
@@ -254,6 +254,7 @@ export default function PodcastPage() {
                             isPlayed={isPlayed(episode.id)}
                             onPlay={() => setCurrentEpisode(episode)}
                             onTogglePlayed={() => togglePlayed(episode.id)}
+                            isAlternate={index % 2 === 1}
                           />
                         </motion.div>
                       ))}
