@@ -37,13 +37,6 @@ export default function AudioPlayer({
 
     const updateTime = () => {
       setCurrentTime(audio.currentTime);
-      // Mark as played when reached 95% or more of the episode (only once)
-      if (!hasMarkedAsPlayedRef.current && audio.duration > 0 && audio.currentTime / audio.duration >= 0.95) {
-        hasMarkedAsPlayedRef.current = true;
-        if (onEpisodeEnded) {
-          onEpisodeEnded();
-        }
-      }
     };
     const updateDuration = () => setDuration(audio.duration);
     
