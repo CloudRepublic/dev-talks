@@ -99,7 +99,7 @@ export default function EpisodeCard({
                 variant="ghost"
                 size="sm"
                 onClick={onTogglePlayed}
-                className="h-auto gap-1.5 px-2 py-1 text-sm font-medium text-primary dark:text-primary-foreground hover:bg-transparent flex-shrink-0 hidden sm:flex opacity-0 group-hover:opacity-100 transition-opacity"
+                className="h-auto gap-1.5 px-2 py-1 text-sm font-medium text-primary dark:text-primary-foreground hover:bg-transparent flex-shrink-0 hidden lg:flex !opacity-0 group-hover:!opacity-100 focus-visible:!opacity-100 transition-opacity duration-200"
                 data-testid={`button-toggle-played-${id}`}
               >
                 {isPlayed ? (
@@ -161,13 +161,13 @@ export default function EpisodeCard({
                   variant="ghost"
                   size="sm"
                   asChild
-                  className="sm:ml-auto h-auto gap-1.5 px-2 py-1 text-sm font-medium text-primary dark:text-primary-foreground hover:bg-transparent sm:opacity-0 sm:group-hover:opacity-100 transition-opacity"
+                  className="lg:ml-auto h-auto gap-1.5 px-2 py-1 text-sm font-medium text-primary dark:text-primary-foreground hover:bg-transparent lg:!opacity-0 lg:group-hover:!opacity-100 lg:focus-visible:!opacity-100 transition-opacity duration-200"
                   data-testid={`link-podlink-${id}`}
                 >
                   <a href={podLinkUrl} target="_blank" rel="noopener noreferrer">
                     <ExternalLink className="h-3.5 w-3.5" />
-                    <span className="hidden sm:inline">Luister met je favoriete app</span>
-                    <span className="sm:hidden">Luister</span>
+                    <span className="hidden lg:inline">Luister met je favoriete app</span>
+                    <span className="lg:hidden">Luister</span>
                   </a>
                 </Button>
               )}
@@ -176,7 +176,7 @@ export default function EpisodeCard({
                 variant="ghost"
                 size="sm"
                 onClick={onTogglePlayed}
-                className="h-auto gap-1.5 px-2 py-1 text-sm font-medium text-primary dark:text-primary-foreground hover:bg-transparent flex-shrink-0 sm:hidden"
+                className="h-auto gap-1.5 px-2 py-1 text-sm font-medium text-primary dark:text-primary-foreground hover:bg-transparent flex-shrink-0 lg:hidden"
                 data-testid={`button-toggle-played-mobile-${id}`}
               >
                 {isPlayed ? (
