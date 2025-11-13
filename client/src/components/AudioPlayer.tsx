@@ -9,6 +9,7 @@ interface AudioPlayerProps {
   imageUrl?: string;
   playRequested?: number;
   onClose: () => void;
+  onEpisodeEnded?: () => void;
 }
 
 export default function AudioPlayer({
@@ -17,6 +18,7 @@ export default function AudioPlayer({
   imageUrl,
   playRequested,
   onClose,
+  onEpisodeEnded,
 }: AudioPlayerProps) {
   const audioRef = useRef<HTMLAudioElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -24,14 +26,25 @@ export default function AudioPlayer({
   const [duration, setDuration] = useState(0);
   const [volume, setVolume] = useState(1);
   const [isMuted, setIsMuted] = useState(false);
+  const hasMarkedAsPlayedRef = useRef(false);
 
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
 
     setCurrentTime(0);
+    hasMarkedAsPlayedRef.current = false;
 
-    const updateTime = () => setCurrentTime(audio.currentTime);
+    const updateTime = () => {
+      setCurrentTime(audio.currentTime);
+      // Mark as played when reached 95% or more of the episode (only once)
+      if (!hasMarkedAsPlayedRef.current && audio.duration > 0 && audio.currentTime / audio.duration >= 0.95) {
+        hasMarkedAsPlayedRef.current = true;
+        if (onEpisodeEnded) {
+          onEpisodeEnded();
+        }
+      }
+    };
     const updateDuration = () => setDuration(audio.duration);
     
     const handleCanPlay = () => {
@@ -43,17 +56,27 @@ export default function AudioPlayer({
       });
     };
 
+    const handleEnded = () => {
+      setIsPlaying(false);
+      if (!hasMarkedAsPlayedRef.current && onEpisodeEnded) {
+        hasMarkedAsPlayedRef.current = true;
+        onEpisodeEnded();
+      }
+    };
+
     audio.addEventListener("timeupdate", updateTime);
     audio.addEventListener("loadedmetadata", updateDuration);
     audio.addEventListener("canplay", handleCanPlay, { once: true });
+    audio.addEventListener("ended", handleEnded);
 
     return () => {
       audio.pause();
       audio.removeEventListener("timeupdate", updateTime);
       audio.removeEventListener("loadedmetadata", updateDuration);
       audio.removeEventListener("canplay", handleCanPlay);
+      audio.removeEventListener("ended", handleEnded);
     };
-  }, [audioUrl]);
+  }, [audioUrl, onEpisodeEnded]);
 
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {

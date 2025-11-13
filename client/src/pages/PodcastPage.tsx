@@ -252,7 +252,6 @@ export default function PodcastPage() {
                           setClickedFromRecent(true);
                           setCurrentEpisode(episode);
                           setPlayRequested(Date.now());
-                          markAsPlaying(episode.id);
                         }}
                         data-testid={`recent-episode-${episodeId}`}
                       >
@@ -432,7 +431,6 @@ export default function PodcastPage() {
                             onPlay={() => {
                               setCurrentEpisode(episode);
                               setPlayRequested(Date.now());
-                              markAsPlaying(episode.id);
                             }}
                             onTogglePlayed={() => togglePlayed(episode.id)}
                             isAlternate={index % 2 === 1}
@@ -461,6 +459,7 @@ export default function PodcastPage() {
           imageUrl={currentEpisode.imageUrl}
           playRequested={playRequested}
           onClose={() => setCurrentEpisode(null)}
+          onEpisodeEnded={() => markAsPlaying(currentEpisode.id)}
         />
       )}
     </div>

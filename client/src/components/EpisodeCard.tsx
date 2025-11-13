@@ -99,7 +99,7 @@ export default function EpisodeCard({
                 variant="ghost"
                 size="sm"
                 onClick={onTogglePlayed}
-                className="h-auto gap-1.5 px-2 py-1 text-sm font-medium text-primary dark:text-primary-foreground hover:bg-transparent flex-shrink-0 hidden sm:flex"
+                className="h-auto gap-1.5 px-2 py-1 text-sm font-medium text-primary dark:text-primary-foreground hover:bg-transparent flex-shrink-0 hidden sm:flex opacity-0 group-hover:opacity-100 transition-opacity"
                 data-testid={`button-toggle-played-${id}`}
               >
                 {isPlayed ? (
@@ -161,7 +161,7 @@ export default function EpisodeCard({
                   variant="ghost"
                   size="sm"
                   asChild
-                  className="sm:ml-auto h-auto gap-1.5 px-2 py-1 text-sm font-medium text-primary dark:text-primary-foreground hover:bg-transparent"
+                  className="sm:ml-auto h-auto gap-1.5 px-2 py-1 text-sm font-medium text-primary dark:text-primary-foreground hover:bg-transparent sm:opacity-0 sm:group-hover:opacity-100 transition-opacity"
                   data-testid={`link-podlink-${id}`}
                 >
                   <a href={podLinkUrl} target="_blank" rel="noopener noreferrer">
